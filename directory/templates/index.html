@@ -4,6 +4,133 @@
 {% endblock %}
 {% block content %}
 
-Welcome to my website
+{% if not current_user.is_authenticated %}
+<div id="carouselExampleIndicators" class="carousel slide my-5 mx-auto" data-ride="carousel" style="height: fit-content; width: 90vw;" >
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100 carousel-img" src="https://img.taste.com.au/fkCE948V/taste/2016/11/classic-aussie-hamburger-91461-1.jpeg" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100 carousel-img" src="https://images.inuth.com/2018/01/Nachos.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100 carousel-img" src="https://thecozycook.com/wp-content/uploads/2022/04/Lasagna-Recipe-f.jpg" alt="Third slide">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+<div class="my-5" style="background-color: black; color: whitesmoke;font-size:50px; margin:5vw;border-radius: 20px;">
+<p class="mx-4 my-3"><b>Search over 15000 recipes . Filter by cuisine, nutrition and ingredients</b></p>
+<a href="{{ url_for('register_page')}}" class="btn btn-warning mx-4">Get Started</a>
+
+</div>
+
+
+{% else %}
+<div class="input-group my-5 mx-auto" style="background-color: rgb(0, 183, 255); width:80vw; border-radius:20px; background-image:url('static/images/food.jpg'); background-size:cover;background-repeat:no-repeat; ">
+  <div class="form-outline mx-auto my-5" style="color: aliceblue;">
+    <h3 style="font-size: 35px;">Filter Results</h3>
+    <form action="/filter" method="post" class="my-3" >
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="veg" name="vegetarian">
+        <label class="form-check-label" for="veg">
+          Vegetarian
+        </label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="" id="non-veg" name="non-vegetarian">
+        <label class="form-check-label" for="non-veg">
+          Non-vegetarian
+        </label>
+      </div>
+      <br><br>
+      <h4>Cuisines</h4>
+      <div class="form-check" id="cuisines">
+        <input class="form-check-input" type="checkbox" value="" id="indian" name="indian">
+        <label class="form-check-label" for="indian">
+          Indian
+        </label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="" id="japanese" name="japanese">
+        <label class="form-check-label" for="japanese">
+          Japanese
+        </label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="" id="italian" name="italian">
+        <label class="form-check-label" for="italian">
+          Italian
+        </label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="" id="mexican" name="mexican">
+        <label class="form-check-label" for="mexican">
+          Mexican
+        </label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="" id="chinese" name="chinese">
+        <label class="form-check-label" for="chinese">
+          Chinese
+        </label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="" id="american" name="american">
+        <label class="form-check-label" for="american">
+          American
+        </label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="" id="spanish" name="spanish">
+        <label class="form-check-label" for="spanish">
+          Spanish
+        </label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="" id="french" name="french">
+        <label class="form-check-label" for="french">
+          French
+        </label>
+
+      </div>
+      <button type="submit" class="btn btn-success my-4">Filter</button>
+    </form>
+    
+  </div>
+</div>
+<div class="search_results mx-auto my-5" style="width:80vw;">
+  {% if results %}
+  {% for result in results.recipes %}
+  <div class="card my-5" style="width: 80%;">
+    <img class="card-img-top" src="{{result.image}}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{result.title}} - 
+        {% if result.vegetarian %}
+          Vegetarian
+        {% else %}
+          Non-Vegetarian
+        {% endif %}
+      </h5>
+      <p class="card-text">{{result.summary | safe}}</p>
+      <a href="/recipe_info/{{ result.id }}" class="btn btn-primary">Instructions</a>
+    </div>
+  </div>
+    
+    
+  {% endfor %}
+
+    
+  {% endif %}
+  {% if not results.recipes %}
+  <h3>Sorry, we could not find any results for your query </h3>
+    
+  {% endif %}
+</div>
+{% endif %}
     
 {% endblock %}

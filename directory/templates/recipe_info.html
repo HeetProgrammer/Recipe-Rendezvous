@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+Recipe Info
+    
+{% endblock %}
+{% block content %}
+<h2 class="text-center my-5">{{result.title }}</h2>
+<div class="food_img" style="width: 50vw; margin:auto">
+    <img src="{{result.image}}" alt="Card image cap">
+</div>
+<div class="ingredients my-5" style="width: 80vw; margin:auto">
+    <h3 class="text-center my-2">Ingredients</h3>
+    <ol>
+    {% for ingredient in result.extendedIngredients %}
+    <li>{{ ingredient.original }}</li>       
+    {% endfor %}
+    </ol>   
+
+</div>
+<div class="instructions my-5" style="width: 80vw;margin:auto">
+    <h3 class="text-center my-2">Instructions</h3>
+    {{ result.instructions | safe}}
+</div>
+
+    
+{% endblock %}
